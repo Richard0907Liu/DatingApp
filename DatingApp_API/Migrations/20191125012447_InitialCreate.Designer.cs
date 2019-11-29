@@ -5,32 +5,32 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DatingApp_API.Migrations
+namespace DatingApp.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
-    [Migration("20191125012447_InitialCreate")]
-    partial class InitialCreate
+  [DbContext(typeof(DataContext))]
+  [Migration("20191125012447_InitialCreate")]
+  partial class InitialCreate
+  {
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0");
+      modelBuilder
+          .HasAnnotation("ProductVersion", "3.0.0");
 
-            modelBuilder.Entity("DatingApp.API.Models.Value", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+      modelBuilder.Entity("DatingApp.API.Models.Value", b =>
+          {
+            b.Property<int>("Id")
+                      .ValueGeneratedOnAdd()
+                      .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+            b.Property<string>("Name")
+                      .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+            b.HasKey("Id");
 
-                    b.ToTable("Values");
-                });
+            b.ToTable("Values");
+          });
 #pragma warning restore 612, 618
-        }
     }
+  }
 }

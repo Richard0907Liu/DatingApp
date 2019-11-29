@@ -55,3 +55,11 @@ D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\obj\Debug\n
 D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\obj\Debug\netcoreapp3.0\DatingApp_API.csproj.CopyComplete
 D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\obj\Debug\netcoreapp3.0\DatingApp_API.dll
 D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\obj\Debug\netcoreapp3.0\DatingApp_API.pdb
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\Microsoft.IdentityModel.Logging.dll
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\Microsoft.IdentityModel.Tokens.dll
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\System.IdentityModel.Tokens.Jwt.dll
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\Microsoft.IdentityModel.Protocols.dll
+D:\1. All_OC\2. Udemdy\1-3 NET core, Angular\DatingApp\DatingApp_API\bin\Debug\netcoreapp3.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
