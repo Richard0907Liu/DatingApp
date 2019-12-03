@@ -17,6 +17,10 @@ using DatingApp_API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using DatingApp_API.Helpers;
 
 namespace DatingApp_API
 {
@@ -74,7 +78,35 @@ namespace DatingApp_API
     {
       if (env.IsDevelopment())
       {
+        // When in Development mode, that would throw exception, 
+        // but in Production mode not throw any exception.
         app.UseDeveloperExceptionPage();
+      }
+      else
+      {  // When in Production mode, that would use "gloabal exceptions handler"
+        // This exceptionHandler adds middleware to our pipeline that catch exceptions
+        app.UseExceptionHandler(builder =>
+        {
+          // The context in this case is related to our http request and response
+          builder.Run(async context =>
+          {
+            // Set this StatusCode
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+            // Get the details of the error. error stores the perticular error
+            var error = context.Features.Get<IExceptionHandlerFeature>();
+            if (error != null)
+            {
+              // Need to extend this response to ADD error on the header of request
+              // Use AddApplicationError of Helpers/Extension.cs
+              context.Response.AddApplicationError(error.Error.Message);
+
+              // Write the error message into http response 
+              await context.Response.WriteAsync(error.Error.Message);
+
+            }
+          });
+        });
       }
 
       // app.UseHttpsRedirection();

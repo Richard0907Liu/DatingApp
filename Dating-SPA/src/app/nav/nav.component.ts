@@ -20,7 +20,8 @@ export class NavComponent implements OnInit {
         console.log("Logged in successfully");
       },
       error => {
-        console.log("Failed to login");
+        // After setting gobal exception in Back-end, can get a specific error from certain API
+        console.log(error);
       }
     );
   }

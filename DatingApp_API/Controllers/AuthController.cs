@@ -56,6 +56,10 @@ namespace DatingApp_API.Controllers
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserForLoginDto UserForLoginDto)
     {
+
+      // Make throw Exception as gloabal exception
+      // throw new Exception("Computer says no!!!!"); For TEST
+
       var userFromRepo = await _repo.Login(UserForLoginDto.Username.ToLower(), UserForLoginDto.Password);
       // Check username already exists in database 
       if (userFromRepo == null) // if username doesn't exist in DB
@@ -65,10 +69,10 @@ namespace DatingApp_API.Controllers
       // Once get token, save some info inside server, not need to get user name and user id every request.
       var claims = new[]
       {           // Get id and store in server
-        new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-        // Get username and store in server
-        new Claim(ClaimTypes.Name, userFromRepo.Username)
-      };
+          new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
+          // Get username and store in server
+          new Claim(ClaimTypes.Name, userFromRepo.Username)
+        };
 
       // Next step, need a key to sign for token
       // hash, byte[]
@@ -100,6 +104,10 @@ namespace DatingApp_API.Controllers
       {
         token = tokenHandler.WriteToken(token)
       });
+
+
+
+
 
     }
   }
