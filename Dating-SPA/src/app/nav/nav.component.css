@@ -1,0 +1,5 @@
+/* Make Welcome as pointer not curser */
+.dropdown-toggle,
+.dropdown-item {
+  cursor: pointer;
+}

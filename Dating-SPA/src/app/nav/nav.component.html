@@ -1,47 +1,83 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Dating App</a>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">Dating App</a>
 
+    <!-- <div class="collapse navbar-collapse" id="navbarsExampleDefault"> -->
 
-  <!-- <div class="collapse navbar-collapse" id="navbarsExampleDefault"> -->
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item active">
-      <a class="nav-link" href="#">Matches
-        <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Lists</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Messages</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" (click)="loggout()">Logout</a>
-    </li>
-  </ul>
+    <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#"
+          >Matches <span class="sr-only">(current)</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Lists</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Messages</a>
+      </li>
+    </ul>
 
-  <!-- Show different navbar When logged in or not  -->
-  <div *ngIf="loggedIn()" class="dropdown">
-    <a class="dropdown-toggle text-light">
-      Wellcome User
-    </a>
-
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#"><i class="fa fa-user"></i>Edit Profile</a>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i>Logout</a>
+    <!-- Show different navbar When logged in or not  -->
+    <!-- Add "dropdown directive" -->
+    <div *ngIf="loggedIn()" class="dropdown" dropdown>
+      <!-- Add dropdownToggle -->
+      <a class="dropdown-toggle text-light" dropdownToggle>
+        <!--  -->
+        <!-- safe navigation operator sometimes called the Elvis operator to the decoded token 
+        ,then this is going to make my unique name property optional. 
+        not get error because authService -->
+        Welcome
+        <strong>{{ authService.decodedToken?.unique_name | titlecase }}</strong>
+      </a>
+      <!-- set up dropdownMenu, it's a "structual directive" -->
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a class="dropdown-item" href="#"
+          ><i class="fa fa-user"></i>Edit Profile</a
+        >
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" (click)="loggout()">
+          <i class="fa fa-sign-out"></i>Logout
+        </a>
+      </div>
     </div>
+
+    <form
+      *ngIf="!loggedIn()"
+      #loginForm="ngForm"
+      class="form-inline my-2 my-lg-0"
+      (ngSubmit)="login()"
+    >
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="Username"
+        required
+        name="username"
+        [(ngModel)]="model.Username"
+        #username="ngModel"
+      />
+      <input
+        class="form-control mr-sm-2"
+        type="password"
+        placeholder="Password"
+        required
+        name="password"
+        [(ngModel)]="model.password"
+        #password="ngModel"
+      />
+      <button
+        [disabled]="!loginForm.valid"
+        class="btn btn-success my-2 my-sm-0"
+        type="submit"
+      >
+        Login
+      </button>
+    </form>
+
+    <!-- </div> -->
   </div>
-
-  <form *ngIf="!loggedIn()" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
-    <input class="form-control mr-sm-2" type="text" placeholder="Username" required name="username"
-      [(ngModel)]="model.Username" #username="ngModel">
-    <input class="form-control mr-sm-2" type="password" placeholder="Password" required name="password"
-      [(ngModel)]="model.password" #password="ngModel">
-    <button [disabled]="!loginForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-  </form>
-  <!-- </div> -->
 </nav>
-
 
 <!-- <pre>
   <strong>Onec use #attribute="ngForm" or "ngModel"</strong>
