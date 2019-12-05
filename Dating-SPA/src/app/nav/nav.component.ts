@@ -1,6 +1,7 @@
 import { AlertifyService } from "./../_services/alertify.service";
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../_services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-nav",
@@ -12,7 +13,8 @@ export class NavComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -23,11 +25,16 @@ export class NavComponent implements OnInit {
       next => {
         // console.log("Logged in successfully");  // Just show on the console
         this.alertify.success("Logged in successfully");
+        // not use router.navigate in here, use that in "complete method"
       },
       error => {
         // After setting gobal exception in Back-end, can get a specific error from certain API
         //console.log(error);
         this.alertify.error(error);
+      },
+      () => {
+        // Want to navigate to ceratin path after logged
+        this.router.navigate(["/members"]);
       }
     );
   }
@@ -49,5 +56,8 @@ export class NavComponent implements OnInit {
     localStorage.removeItem("token");
     // console.log("Logged out");
     this.alertify.message("Logged out");
+
+    // Navigate to Home page after logging out
+    this.router.navigate(["/home"]);
   }
 }
