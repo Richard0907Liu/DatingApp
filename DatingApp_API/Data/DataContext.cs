@@ -13,5 +13,8 @@ namespace DatingApp.API.Data
 
     public DbSet<User> Users { get; set; }
 
+    // Code first to Add Photos, named for table inside DB, and then create a new migration
+    public DbSet<Photo> Photos { get; set; }
+
   }
 }

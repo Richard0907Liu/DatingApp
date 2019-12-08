@@ -21,6 +21,7 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DatingApp_API.Helpers;
+using AutoMapper;
 
 namespace DatingApp_API
 {
@@ -39,11 +40,32 @@ namespace DatingApp_API
       services.AddDbContext<DataContext>(x => x.UseSqlite(
             Configuration.GetConnectionString("DefaultConnection"))
       );
-      services.AddControllers();
+
+      // AddControllers
+      // Use NewtonsoftJson that have feature we want. Not use System.Text.Json
+      // Solved !? show wrong on Postman, 500Internal Server Error???
+      services.AddControllers().AddNewtonsoftJson(opt =>
+      {
+        // Solved, Newtonsoft.Json.JsonSerializationException: Self referencing loop detected for property    
+        opt.SerializerSettings.ReferenceLoopHandling =
+        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+      });
+
+      // Old one, replaced with AddNewtonsoftJson()
+      // using System.Text; but it is not quite ready form prime time.
+      // And it doesn't include features we want 
+      //services.AddControllers();
+      // END AddControllers
 
       // For CORS
       services.AddCors(); // Use this as middleware
 
+      // AutoMapper
+      services.AddAutoMapper(typeof(DatingRepository).Assembly);  // go to UsersController
+      // END AutoMapper
+
+
+      // services.AddScoped()
       // Add Repository into Startup, different method for creating instance of repository
       // AddSingleton() to create instance of our repository throughout the application
       // AddTransient(), is useful for lightweight state services because there are created each time they are requested.
@@ -52,6 +74,9 @@ namespace DatingApp_API
       // but in the current scope itself. for each http request it uses the same instance not use others.
       // It suitable for AuthRepository
       services.AddScoped<IAuthRepository, AuthRepository>();
+
+      // Add DatingRepository
+      services.AddScoped<IDatingRepository, DatingRepository>();
       // END of adding repository
 
       // Add Authentication

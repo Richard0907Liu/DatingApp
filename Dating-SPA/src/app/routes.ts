@@ -8,7 +8,7 @@ import { MessagesComponent } from "./messages/messages.component";
 export const appRoutes: Routes = [
   { path: "", component: HomeComponent },
 
-  // Use "dummy route" to reduce adding "acnActivate" into many path object
+  // Protecting multiple routes once by using a "dummy routes"
   {
     // => / and then go to children add members or messages etc
     path: "", // path="dummy" => dummymembers

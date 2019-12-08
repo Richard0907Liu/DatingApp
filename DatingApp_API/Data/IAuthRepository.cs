@@ -6,7 +6,7 @@ namespace DatingApp_API.Data
   // Create Repository pattern for managing method to get data from database
   // 
   public interface IAuthRepository  // It must be "Interface"
-  {   // Task, represent an asynchronous operation that can return a value
+  {   // Task, represent an asynchronous operation that not return a value
     Task<User> Register(User user, string password);
 
     Task<User> Login(string username, string password);
