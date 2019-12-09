@@ -1,0 +1,49 @@
+.card:hover img {
+  transform: scale(1.2, 1.2);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+  opacity: 0.7;
+}
+
+.card img {
+  transform: scale(1.0, 1.0);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+}
+
+/* Don't want image overflow card sqaure when hovering  */
+.card-img-wrapper {
+  overflow: hidden
+}
+
+
+/* In order to use the "absolute positioning" then the the container element that its end needs to be a relatively positioned element. 
+  So make card-img-wrapper container as position: relative first, and then make member-icons as position: absolute
+  */
+.card-img-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.member-icons {
+  position: absolute;
+  /* Can control bottom on left, right or top etc */
+  bottom: -30%;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  opacity: 0;
+  /* cannot be saw*/
+}
+
+/* It takes effect when a user is hovering over and the member icons  */
+.card-img-wrapper:hover .member-icons {
+  bottom: 0;
+  opacity: 1;
+}
+
+.animate {
+  transition: all 0.3s ease-in-out;
+  /* bottom: -30% => 0, goes up */
+}

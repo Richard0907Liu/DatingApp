@@ -41,11 +41,12 @@ export class ErrorInterceptor implements HttpInterceptor {
               // In this case, key is password
               console.log("key in error.interceptor: ", key);
               if (serverError.errors[key]) {
+                // "modalStateErrors" didn't get sserverError.errors[key] ??!
                 modalStateErrors += serverError.errors[key] + "\n"; // build a list string
               }
             }
           }
-
+          console.log("serverError: ", serverError);
           return throwError(modalStateErrors || serverError || "Server Error");
         }
       })

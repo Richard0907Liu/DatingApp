@@ -10,6 +10,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 export class RegisterComponent implements OnInit {
   // Use Input() to get variable from parent (home html)
   @Input() valuesFromHome: any;
+
   // Use Output() to pass variable to parent component
   // Output property emits "events"
   @Output() cancelRegister = new EventEmitter(); // This EventEmitter from core

@@ -2,8 +2,11 @@ import { AuthGuard } from "./_guards/auth.guard";
 import { ListComponent } from "./list/list.component";
 import { HomeComponent } from "./home/home.component";
 import { Routes } from "@angular/router";
-import { MemberListComponent } from "./member-list/member-list.component";
+import { MemberListComponent } from "./members/member-list/member-list.component";
 import { MessagesComponent } from "./messages/messages.component";
+import { MemberDetailComponent } from "./members/member-detail/member-detail.component";
+import { MemberDetailResolver } from "./_resolvers/member-detail.resolver";
+import { MemberListResolver } from "./_resolvers/member-list.resolver";
 
 export const appRoutes: Routes = [
   { path: "", component: HomeComponent },
@@ -19,7 +22,18 @@ export const appRoutes: Routes = [
       //{ path: "members", component: MemberListComponent, canActivate: [AuthGuard] },
 
       // All of three fo these is in roots.
-      { path: "members", component: MemberListComponent },
+      {
+        path: "members",
+        component: MemberListComponent,
+        resolve: { users: MemberListResolver }
+      },
+      // resolve, passing object (MemberDetailResolver) to "users" from our root.
+      // resolve for getting our data before we activate the Router itself.
+      {
+        path: "members/:id",
+        component: MemberDetailComponent,
+        resolve: { user: MemberDetailResolver }
+      },
       { path: "messages", component: MessagesComponent },
       { path: "lists", component: ListComponent }
     ]

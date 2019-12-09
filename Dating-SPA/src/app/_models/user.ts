@@ -1,0 +1,24 @@
+import { Photo } from "./photo";
+
+export interface User {
+  // Convention: anuglar use lowercase for attributes
+  id: number;
+  username: string;
+  knowAs: string;
+  age: number;
+  gender: string;
+  created: Date;
+  lastActive: Date;
+  photoUrl: string;
+  city: string;
+  country: string;
+
+  // Need to include properties for UserForDetailedDto in Backend
+  //  ? => set as optional
+  interests?: string;
+  introduction?: string;
+  lookingFor?: string;
+
+  // Need to create Photo Interface, because want to add a separate one to store all of properties
+  photos?: Photo[];
+}
