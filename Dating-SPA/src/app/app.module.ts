@@ -14,7 +14,7 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG
 } from "@angular/platform-browser";
-
+////
 import { AppComponent } from "./app.component";
 import { AuthService } from "./_services/auth.service";
 import { HomeComponent } from "./home/home.component";
