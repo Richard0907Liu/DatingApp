@@ -31,7 +31,7 @@
       </a>
       <!-- set up dropdownMenu, it's a "structual directive" -->
       <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a class="dropdown-item" href="#"><i class="fa fa-user"></i>Edit Profile</a>
+        <a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user"></i>Edit Profile</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" (click)="loggout()">
           <i class="fa fa-sign-out"></i>Logout

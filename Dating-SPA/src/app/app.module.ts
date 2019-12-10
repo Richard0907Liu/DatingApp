@@ -28,6 +28,9 @@ import { appRoutes } from "./routes";
 import { UserService } from "./_services/user.service";
 import { MemberCardComponent } from "./members/member-card/member-card.component";
 import { MemberDetailComponent } from "./members/member-detail/member-detail.component";
+import { MemberEditComponent } from "./members/member-edit/member-edit.component";
+import { MemberEditResolver } from "./_resolvers/member-edit.resolver";
+import { PreventUnsavedChanges } from "./_guards/prevent-unsaved-changes.guard";
 
 // Solve when first logging, the request didn't include token for sending the request
 // Add JwtModule
@@ -54,7 +57,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
     ListComponent,
     MessagesComponent,
     MemberCardComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +88,9 @@ export class CustomHammerConfig extends HammerGestureConfig {
     MemberDetailResolver,
     MemberListResolver,
     // Solve this problem, Class constructor HammerGestureConfig cannot be invoked without 'new'
-    { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
+    { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig },
+    MemberEditResolver,
+    PreventUnsavedChanges
   ],
   bootstrap: [AppComponent]
 })
