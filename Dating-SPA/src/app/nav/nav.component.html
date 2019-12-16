@@ -20,14 +20,18 @@
     <!-- Show different navbar When logged in or not  -->
     <!-- Add "dropdown directive" -->
     <div *ngIf="loggedIn()" class="dropdown" dropdown>
+      <span class="mr-1">
+        <!-- Show logged user's main photo-->
+        <!-- old one before any to any component communication <img src="{{authService.currentUser.photoUrl}}" alt=""> -->
+        <img src="{{photoUrl}}" alt="">
+      </span>
       <!-- Add dropdownToggle -->
       <a class="dropdown-toggle text-light" dropdownToggle>
         <!--  -->
         <!-- safe navigation operator sometimes called the Elvis operator to the decoded token 
         ,then this is going to make my unique name property optional. 
         not get error because authService -->
-        Welcome
-        <strong>{{ authService.decodedToken?.unique_name | titlecase }}</strong>
+        Welcome<strong>{{ authService.decodedToken?.unique_name | titlecase }}</strong>
       </a>
       <!-- set up dropdownMenu, it's a "structual directive" -->
       <div class="dropdown-menu mt-3" *dropdownMenu>

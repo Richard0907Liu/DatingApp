@@ -38,6 +38,7 @@ namespace DatingApp_API
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddDbContext<DataContext>(x => x.UseSqlite(
+            // Get info from appsettings.json
             Configuration.GetConnectionString("DefaultConnection"))
       );
 
@@ -59,6 +60,12 @@ namespace DatingApp_API
 
       // For CORS
       services.AddCors(); // Use this as middleware
+
+      // Link to Cloudinary
+      // Need to specify type "CloudinarySettings" and then get info from CloudinarySettings in appsettings.json
+      services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+
+      //
 
       // AutoMapper
       services.AddAutoMapper(typeof(DatingRepository).Assembly);  // go to UsersController
@@ -140,8 +147,12 @@ namespace DatingApp_API
 
       app.UseAuthentication(); // for .NET 3.0
       app.UseAuthorization();
+
       // Code for CORS .NET 3.0
+
       app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+      // Need "AllowCredentials()" for uploading files, this would actually fix our problem with ng2-file-upload.
+      // But use  AllowCredentials() means needing to use "cookies" for authenitcaton, but we do not use cookies authentication
 
 
 

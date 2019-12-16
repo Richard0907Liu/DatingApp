@@ -15,6 +15,9 @@ export class MemberEditComponent implements OnInit {
   // Reset the <Information> propmt after saving
   @ViewChild("editForm", { static: true }) editForm: NgForm; // see member-edit.html
 
+  user: User;
+  photoUrl: string;
+
   // HostListener decorator, has got the ability to listen to our host in this case the browser
   // and take an action based on something that's happening inside our browser.
   // FOR prevetion, if close the browser, it show a dialogue first.
@@ -26,7 +29,6 @@ export class MemberEditComponent implements OnInit {
   }
   /////
 
-  user: User;
   constructor(
     private route: ActivatedRoute,
     private alertify: AlertifyService,
@@ -38,6 +40,11 @@ export class MemberEditComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.user = data["user"];
     });
+
+    // When subscribe currentPhotoUrl, the main photo and nav photo would be the same
+    this.authService.currentPhotoUrl.subscribe(
+      photoUrl => (this.photoUrl = photoUrl)
+    );
   }
 
   updateUser() {
@@ -56,5 +63,9 @@ export class MemberEditComponent implements OnInit {
           this.alertify.error(error);
         }
       );
+  }
+
+  updateMainPhoto(photoUrl) {
+    this.user.photoUrl = photoUrl;
   }
 }

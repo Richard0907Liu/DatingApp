@@ -9,6 +9,7 @@ using DatingApp_API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 
 namespace DatingApp_API.Controllers
 {
@@ -18,8 +19,10 @@ namespace DatingApp_API.Controllers
   {
     private readonly IAuthRepository _repo;
     private readonly IConfiguration _config;
-    public AuthController(IAuthRepository repo, IConfiguration config) // Dependency Injection
+    private readonly IMapper _mapper;
+    public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper) // Dependency Injection
     {
+      _mapper = mapper;
       _config = config;
       _repo = repo;
 
@@ -99,17 +102,16 @@ namespace DatingApp_API.Controllers
       // Use CreateToken to get JWT Token
       var token = tokenHandler.CreateToken(tokenDescriptor);
 
+      var user = _mapper.Map<UserForListDto>(userFromRepo);
+
       // return token to client
       // use tokenHandler to write token and save into token
       return Ok(new
       {
-        token = tokenHandler.WriteToken(token)
+        token = tokenHandler.WriteToken(token),
+        // return user info, first need include "photos" in AuthRepository
+        user
       });
-
-
-
-
-
     }
   }
 }

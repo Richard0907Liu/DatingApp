@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
 using DatingApp.API.Models;
@@ -28,6 +29,19 @@ namespace DatingApp_API.Data
     {
       // not use async, the same reason like Add()
       _context.Remove(entity);
+    }
+
+    public async Task<Photo> GetMainPhotoForUser(int userId)
+    {
+      // Where => return many user's photos, and then add "FirstOrDefaultAsync" just return "one photo"
+      return await _context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
+    }
+
+    public async Task<Photo> GetPhoto(int id)
+    {
+      var photo = await _context.Photos.FirstOrDefaultAsync(p => p.Id == id);
+
+      return photo;
     }
 
     public async Task<User> GetUser(int id)

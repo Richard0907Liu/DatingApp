@@ -32,6 +32,8 @@ namespace DatingApp_API.Helpers
 
       // Want to update User model
       CreateMap<UserForUpdateDto, User>();
+      CreateMap<Photo, PhotoForReturnDto>();
+      CreateMap<PhotoForCreationDto, Photo>();
 
 
 

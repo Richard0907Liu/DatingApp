@@ -14,7 +14,15 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG
 } from "@angular/platform-browser";
-////
+
+
+// import services, resolve into "providers"
+
+// Put Modules into "imports"
+import { FileUploadModule } from 'ng2-file-upload';
+
+
+//// import component into "declaration"
 import { AppComponent } from "./app.component";
 import { AuthService } from "./_services/auth.service";
 import { HomeComponent } from "./home/home.component";
@@ -31,6 +39,8 @@ import { MemberDetailComponent } from "./members/member-detail/member-detail.com
 import { MemberEditComponent } from "./members/member-edit/member-edit.component";
 import { MemberEditResolver } from "./_resolvers/member-edit.resolver";
 import { PreventUnsavedChanges } from "./_guards/prevent-unsaved-changes.guard";
+import { PhotoEditorComponent } from "./members/photo-editor/photo-editor.component";
+
 
 // Solve when first logging, the request didn't include token for sending the request
 // Add JwtModule
@@ -58,7 +68,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
     MessagesComponent,
     MemberCardComponent,
     MemberDetailComponent,
-    MemberEditComponent
+    MemberEditComponent,
+    PhotoEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +89,10 @@ export class CustomHammerConfig extends HammerGestureConfig {
         whitelistedDomains: ["localhost:5000"], // have to be correct
         blacklistedRoutes: ["localhost:5000/api/auth"] // set up this because not need to send token to this url
       }
-    })
+    }),
+    // Import FileUpload module
+    FileUploadModule  // once import FileUploadModule, red underline on [uploader]="uploader" would be dispaeared
+
   ],
   providers: [
     AuthService,

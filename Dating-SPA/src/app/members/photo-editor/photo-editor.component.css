@@ -1,0 +1,18 @@
+img.img-thumbnail {
+  height: 100px;
+  min-width: 100px !important;
+  /* make this important, So that it overrides the bootstrap styling or any other styling */
+  margin-bottom: 2px;
+}
+
+/* When dropping files, The icon turns into red  */
+.nv-file-over {
+  border: dotted 2px red;
+}
+
+/* get rid of that text around the input. we need specify input type equals file and then just
+say colour is transparence and that's how we can hide the texts in that particular area. 
+Make "No file chosen" transparent  */
+input[type=file] {
+  color: transparent;
+}

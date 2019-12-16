@@ -14,7 +14,11 @@
     <!-- one row split into two columns -->
     <div class="col-sm-4">
       <div class="card">
-        <img class="card-img-top img-thumbnail" src="{{user.photoUrl}}" alt="{{user.knowAs}}">
+        <!-- Once photoUrl changed, the photo would be changed too. 
+          So (getMemberPhotoChange)="updateMainPhoto($event)" can help change main photo-->
+        <!-- <img class="card-img-top img-thumbnail" src="{{user.photoUrl}}" alt="{{user.knowAs}}"> -->
+        <img class="card-img-top img-thumbnail" src="{{photoUrl}}" alt="{{user.knowAs}}">
+
         <div class="card-body">
           <div>
             <strong>Location:</strong>
@@ -63,7 +67,12 @@
             </form>
           </tab>
           <tab heading="Edit Photos">
-            <p>Photo edit will go here</p>
+            <!-- Get variables from child component (photo-editor) that child emits getMemberPhotoChange with variables to parent
+              and then invoke updateMainPhoto(), $event containing photo URL from cild component 
+            So, when changing the main, that would immediately change main photo -->
+            <app-photo-editor [photos]="user.photos" (getMemberPhotoChange)="updateMainPhoto($event)">
+            </app-photo-editor>
+            <!--Pass user photos to photo-editor component-->
           </tab>
         </tabset>
       </div>
