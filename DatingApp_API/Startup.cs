@@ -100,9 +100,11 @@ namespace DatingApp_API
             ValidateIssuer = false,
             ValidateAudience = false
           };
-        });
+      });
       // END of adding authentication
 
+      // user AddScoped,  because we want this to create a new instance of this per requests
+      services.AddScoped<LogUserActivity>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
