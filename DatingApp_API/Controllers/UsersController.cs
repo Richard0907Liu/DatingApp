@@ -36,7 +36,7 @@ namespace DatingApp_API.Controllers
       // return Ok(users); // Not good, because return passwordHash, passwordSalt etc 
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetUser")]
     public async Task<IActionResult> GetUser(int id)
     {
       var user = await _repo.GetUser(id);

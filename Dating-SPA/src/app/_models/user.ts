@@ -5,6 +5,7 @@ export interface User {
   id: number;
   username: string;
   knowAs: string;
+  knownAs: string;  // need to add knownAs to register, because knownAs is a attribute in back-end
   age: number;
   gender: string;
   created: Date;

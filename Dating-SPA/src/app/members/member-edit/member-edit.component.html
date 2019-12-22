@@ -17,7 +17,7 @@
         <!-- Once photoUrl changed, the photo would be changed too. 
           So (getMemberPhotoChange)="updateMainPhoto($event)" can help change main photo-->
         <!-- <img class="card-img-top img-thumbnail" src="{{user.photoUrl}}" alt="{{user.knowAs}}"> -->
-        <img class="card-img-top img-thumbnail" src="{{photoUrl}}" alt="{{user.knowAs}}">
+        <img class="card-img-top img-thumbnail" src="{{photoUrl || '../../../assets/user.png'}}" alt="{{user.knownAs}}">
 
         <div class="card-body">
           <div>

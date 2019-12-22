@@ -45,14 +45,24 @@ namespace DatingApp_API.Controllers
       if (await _repo.UserExists(UserForRegisterDto.Username))
         return BadRequest("Username already exists");
 
-      // Create a new username
-      var userToCreate = new User
-      {
-        Username = UserForRegisterDto.Username  // Username is of User in Models
-      };
+      var userToCreate = _mapper.Map<User>(UserForRegisterDto); // User as destination, UserForRegisterDto as source
+      // Old one.Create a new username
+      // var userToCreate = new User
+      // {
+      //   Username = UserForRegisterDto.Username  // Username is of User in Models
+      // };
 
       var createdUser = await _repo.Register(userToCreate, UserForRegisterDto.Password);
-      return StatusCode(201);
+
+      // not want to include passwordHash and passwordSalt, so Map<>
+      var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+
+      // need to specify the string of the route name. have a method in UsersController to getAUser
+      // first param "name of route" GetUser method in UsersController, 
+      //second param call this controler with value {conroller, value } and send back as location as Header 
+      // Third param in here is what we need to return the value or object from the controller
+      return CreatedAtRoute("GetUser", new {controller = "Users", id = createdUser.Id}, userToReturn);
+      //return StatusCode(201); old , just to cheat the postman and front-end
     }
 
     // Let logged in users to get token and maintain the authorization

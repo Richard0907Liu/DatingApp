@@ -81,14 +81,21 @@ export class PhotoEditorComponent implements OnInit {
         };
         // push "photo" into "photos: photo[]"
         this.photos.push(photo);
+
+        // Want to automatically make first uploaded photo as Main photo
+        if(photo.isMain) {
+          this.authService.changeMemberPhoto(photo.url);
+          this.authService.currentUser.photoUrl = photo.url;
+           // Save currentUser info into user
+          localStorage.setItem("user",JSON.stringify(this.authService.currentUser));
+        }
       }
     };
   }
 
   setMainPhoto(photo: Photo) {
     // params userId and photoId
-    this.userService
-      .setMainPhoto(this.authService.decodedToken.nameid, photo.id)
+    this.userService.setMainPhoto(this.authService.decodedToken.nameid, photo.id)
       .subscribe(
         () => {
           //console.log('Suceesfully set to main');
@@ -112,10 +119,8 @@ export class PhotoEditorComponent implements OnInit {
           // Solve the localStorage for refreshing problem on main photo
           // Overwrite user in localStorage (from authService)
           this.authService.currentUser.photoUrl = photo.url;
-          localStorage.setItem(
-            "user",
-            JSON.stringify(this.authService.currentUser)
-          );
+          // Save currentUser info into user
+          localStorage.setItem("user",JSON.stringify(this.authService.currentUser));
         },
         error => {
           this.alertify.error(error);

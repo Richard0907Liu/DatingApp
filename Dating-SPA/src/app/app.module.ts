@@ -3,8 +3,8 @@ import { RouterModule } from "@angular/router";
 // import { ValueComponent } from "./value/value.component";
 import { HttpClientModule } from "@angular/common/http";
 import { NavComponent } from "./nav/nav.component";
-import { FormsModule } from "@angular/forms";
-import { BsDropdownModule, TabsModule } from "ngx-bootstrap";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BsDropdownModule, TabsModule, BsDatepickerModule } from "ngx-bootstrap";
 import { JwtModule } from "@auth0/angular-jwt";
 import { MemberDetailResolver } from "./_resolvers/member-detail.resolver";
 import { MemberListResolver } from "./_resolvers/member-list.resolver";
@@ -14,6 +14,7 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG
 } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 // import services, resolve into "providers"
@@ -91,8 +92,10 @@ export class CustomHammerConfig extends HammerGestureConfig {
       }
     }),
     // Import FileUpload module
-    FileUploadModule  // once import FileUploadModule, red underline on [uploader]="uploader" would be dispaeared
-
+    FileUploadModule,  // once import FileUploadModule, red underline on [uploader]="uploader" would be dispaeared
+    ReactiveFormsModule,
+    BsDatepickerModule.forRoot(),  // Add this to make datepicker workable for all browser
+    BrowserAnimationsModule // for datepicker too
   ],
   providers: [
     AuthService,
