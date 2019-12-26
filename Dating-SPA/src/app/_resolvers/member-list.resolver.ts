@@ -10,6 +10,10 @@ import { catchError } from "rxjs/operators";
 
 @Injectable()
 export class MemberListResolver implements Resolve<User[]> {
+  // set up variables for pagination 
+  pageNumber = 1;
+  pageSize = 5;
+
   constructor(
     private userService: UserService,
     private router: Router,
@@ -19,8 +23,10 @@ export class MemberListResolver implements Resolve<User[]> {
   // make resolve as Observable and returned type is User
   // when we use a resolve this automatically subscribes to the method so we don't need to subscribe
   resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
+    
     // need to get the idea from the root parameters
-    return this.userService.getUsers().pipe(
+     // go to chrome network users? => can see full request URL with params
+    return this.userService.getUsers(this.pageNumber, this.pageSize).pipe(
       // not need to subscribe but need to catch any error
       catchError(error => {
         this.alertify.error("Problem retreiving data");

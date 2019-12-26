@@ -13,6 +13,7 @@ namespace DatingApp_API.Controllers
 {
   // Perform custom action filer, so user everytime use those method well automatically record lastActive
   [ServiceFilter(typeof(LogUserActivity))] 
+  
   [Authorize]
   [Route("api/[controller]")]
   [ApiController]
@@ -27,13 +28,42 @@ namespace DatingApp_API.Controllers
       _mapper = mapper;
     }
 
+    // For pagination, userParams => that is "pageSize"
+    // Have to add [FromQuery] in Get method if want to send params from URL
     [HttpGet]
-    public async Task<IActionResult> GetUsers()
-    {
-      var users = await _repo.GetUsers();
+    public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)  // model from UserParams, ?pageNumber=1&pageSize=3
+    { 
+      // Get the user's I.D. from their token, for filtering gender
+      var currentUserId =  int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+      // Get user info
+      var userFromRepo = await _repo.GetUser(currentUserId);
+      // set UserId into userParams
+      userParams.UserId = currentUserId;
+
+      // Get user's gender
+      // if selected gender is null, set the oppsite gender of user by default
+      // if user specifies gender not process this if condition
+      if(string.IsNullOrEmpty(userParams.Gender))  
+      { 
+        userParams.Gender = userFromRepo.Gender == "male" ? "female" : "male";
+      }
+
+
+       // userParams from query string
+      var users = await _repo.GetUsers(userParams);
 
       // Put vairable users into Map<> and then want to get IEnumerable<UserForListDto>
       var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
+
+      // Return pagination infomatin in Headers, let our client application know about the pagination is 
+      // so adding the pagination to the response headers.
+
+      // Because we're inside an API controller we have access to the "Response"
+      // And because we've also written an "AddPagination() in Extensions.cs" to the HTTP response.
+      // add users as params in AddPagination(), users include pageSize, totalItems etc..
+      Console.WriteLine("users.TotalCount in UsersController::::::" + users.TotalCount);  //0
+      Response.AddPagination(users.CurrentPage, users.PageSize,
+          users.TotalCount, users.TotalPages);
 
       return Ok(usersToReturn);
       // return Ok(users); // Not good, because return passwordHash, passwordSalt etc 

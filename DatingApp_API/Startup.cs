@@ -133,6 +133,7 @@ namespace DatingApp_API
             {
               // Need to extend this response to ADD error on the header of request
               // Use AddApplicationError of Helpers/Extension.cs
+              // And then go to Extentions.cs to add information into reponse Header with Error message
               context.Response.AddApplicationError(error.Error.Message);
 
               // Write the error message into http response 

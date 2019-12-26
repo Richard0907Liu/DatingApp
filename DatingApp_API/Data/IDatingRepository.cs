@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
+using DatingApp_API.Helpers;
 
 namespace DatingApp_API.Data
 {
@@ -14,7 +15,13 @@ namespace DatingApp_API.Data
     // The Task class represents a single operation that does not return a value and that usually executes asynchronously.
     Task<bool> SaveAll();
 
-    Task<IEnumerable<User>> GetUsers();
+    // Return pageList for pagination, pagesize, totalitems, CurrentPage etc..
+    // need to put params into here
+    Task<PagedList<User>> GetUsers(UserParams userParams);
+    
+    // Old GetUsers()
+    // Task<IEnumerable<User>> GetUsers(); // Old one
+    
     Task<User> GetUser(int id);
 
     // For Getting Photos info including photo uri

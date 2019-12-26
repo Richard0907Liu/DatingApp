@@ -1,4 +1,53 @@
-<div class="container mt-5">
+<div class="text-center mt-3">
+  <h2>Your matches - {{pagination.totalItems}} found</h2>
+</div>
+
+<div class="container mt-3">
+
+  <form class="form-inline" #form="ngForm" (ngSubmit)="loadUsers()" novalidate>
+    <div class="form-group">
+      <label for="minAge">Age From</label>
+      <input type="number" class="form-control ml-1" style="width: 70px" id="minAge"
+        [(ngModel)]="userParams.minAge" name="minAge" >
+    </div>
+  
+    <div class="form-group px-2">
+      <label for="maxAge">Age To</label>
+      <input type="number" class="form-control ml-1" style="width: 70px" id="maxAge" 
+        [(ngModel)]="userParams.maxAge" name="maxAge">
+    </div>
+  
+    <div class="form-group px-2">
+      <label for="gender">Show: </label>
+      <select class="form-control ml-1" style="width: 130px" id="gender" 
+        [(ngModel)]="userParams.gender" name="gender">
+        <option *ngFor="let gender of genderList" [value]="gender.value">
+          {{gender.display}}
+        </option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-left:10px">
+      Apply Filters
+    </button>
+    <button type="button" class="btn btn-info" (click)="resetFilters()" style="margin-left:10px">
+      Reset Filter
+    </button>
+
+    <div class="col">
+      <div class="btn-group float-right">
+                                <!-- values in btnRadio, add (clikc), when click button, the value would be sent to API  -->
+        <button type="button" name="orderBy" class="btn btn-primary" 
+          [(ngModel)]="userParams.orderBy" (click)="loadUsers()" btnRadio="lastActive" >Last Active</button>
+        <button type="button" name="orderBy" class="btn btn-primary" 
+          [(ngModel)]="userParams.orderBy" (click)="loadUsers()" btnRadio="created" >Newest Members</button>
+      </div>
+    </div> 
+
+  
+  </form>
+  <br>
+
+
   <div class="row">
     <!-- large screen each column takes 2 part of 12 part width
          small screen each column takes 6 part of 12 part width -->
@@ -8,4 +57,17 @@
       <!-- [user] represents our input property, and "user" from  "let user of users" -->
     </div>
   </div>
+</div>
+
+<!-- d-flex => display flex -->
+<div class="d-flex justify-content-center">
+  <!-- Add ngModel for currentPage because this is what gets updated when we click on one of these buttons. 
+  We'll need to add a page changed events inside our component. After adding ngModel, itemsPerPage it show correct pages -->
+  <pagination [boundaryLinks]="true" 
+      [totalItems]="pagination.totalItems"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+  </pagination>
 </div>
