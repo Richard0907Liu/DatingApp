@@ -25,7 +25,7 @@ export class UserService {
   // observe by default, it returns "body of request" but we can ask it to observe the "response (including response headers)" 
   // optional params.
   // By defualt in back end,  page=1 and itemsPerPage=10
-  getUsers(page?, itemsPerPage?, userParams?): Observable<PaginatedResult<User[]>> {
+  getUsers(page?, itemsPerPage?, userParams?, likesParam?): Observable<PaginatedResult<User[]>> {
     // because we created paginated result as a class we need to create a new instance
     const paginationResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
 
@@ -44,7 +44,15 @@ export class UserService {
       params = params.append('maxAge', userParams.maxAge);
       params = params.append('gender', userParams.gender);
       params = params.append('orderBy', userParams.orderBy);
+    }
 
+    // Liker or Likee list, user can choose 'Likers' or 'Likees'
+    // Need "resolver" to load a like list first in List page
+    if(likesParam === 'Likers') {
+      params = params.append('likers', 'true');
+    }
+    if(likesParam === 'Likees') {
+      params = params.append('likees', 'true');
     }
 
 
@@ -86,7 +94,7 @@ export class UserService {
 
   // id => photo Id
   setMainPhoto(userId: number, id: number) {
-    // Need to send body, but here is just {} empty object
+    // Need to send body in POST method, but here is just {} empty object
     return this.http.post(
       this.baseUrl + "users/" + userId + "/photos/" + id + "/setMain",
       {}
@@ -95,5 +103,9 @@ export class UserService {
 
   deletePhoto(userId: number, id: number) {
     return this.http.delete(this.baseUrl + "users/" + userId + "/photos/" + id);
+  }
+
+  sendLike(id: number, recipientId: number){
+    return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
   }
 }

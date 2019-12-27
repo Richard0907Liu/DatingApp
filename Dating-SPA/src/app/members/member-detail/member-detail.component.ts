@@ -28,6 +28,7 @@ export class MemberDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Get data form "route resolver"
     //  this.loadUser(); //not user this, it cause geting variable  and loading component are not work properly
     this.route.data.subscribe(data => {
       // MemberDetailResolver send data into user from the root and then get data by data['user']

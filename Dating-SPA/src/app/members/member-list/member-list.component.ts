@@ -31,7 +31,7 @@ export class MemberListComponent implements OnInit {
 
   ngOnInit() {
     
-    // MemberListResolver send data into users from the root and then get data by data['users']
+    // MemberListResolver send data into users from the 'root resolver" and then get data by data['users']
     this.route.data.subscribe(data => {
       // For pagination, add "result"
       this.users = data["users"].result;  // "users" from  resolve: { users: MemberListResolver } in routes.cs
@@ -56,7 +56,6 @@ export class MemberListComponent implements OnInit {
     console.log(this.pagination.currentPage); // just show clicked page in
 
     this.loadUsers();
-
   }
 
   // Set up reset filter
@@ -69,7 +68,7 @@ export class MemberListComponent implements OnInit {
 
   // we're going to need to load the next batch of users
   // need to add params into getUsers
-    loadUsers() {
+  loadUsers() {
     this.userService
       .getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
       .subscribe((res: PaginatedResult<User[]>) => {

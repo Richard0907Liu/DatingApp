@@ -27,6 +27,10 @@ namespace DatingApp_API.Helpers
 
         // Add OrderBy filter property
         public string OrderBy {get; set; }
+
+        // Add likers and likees for like list
+        public bool Likees {get; set;} = false; // the user likes someone
+        public bool Likers {get; set; } = false; // someone likes the user
         
     }
 }

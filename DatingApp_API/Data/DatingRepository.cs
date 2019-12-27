@@ -33,6 +33,7 @@ namespace DatingApp_API.Data
       _context.Remove(entity);
     }
 
+
     public async Task<Photo> GetMainPhotoForUser(int userId)
     {
       // Where => return many user's photos, and then add "FirstOrDefaultAsync" just return "one photo"
@@ -73,6 +74,23 @@ namespace DatingApp_API.Data
       users = users.Where(u => u.Id != userParams.UserId);
       // show oppsite gender
       users = users.Where(u => u.Gender == userParams.Gender);
+
+      // For the liker list
+      if(userParams.Likers)
+      {
+          var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
+          // When userLikers "Contain" u.Id, that would be selected.
+          users = users.Where(u => userLikers.Contains(u.Id));
+
+      }
+      // For the likee list
+      if(userParams.Likees)
+      {
+        var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
+          // When userLikees "Contain" u.Id, that would be selected.
+          users = users.Where(u => userLikees.Contains(u.Id));
+      }
+
 
       // Calculate what we want in return.
       if(userParams.MinAge != 18 || userParams.MaxAge != 99) // user specify age 
@@ -116,10 +134,44 @@ namespace DatingApp_API.Data
     //   return users;
     // }
 
+    // Create private method for like list
+    // id => userId
+    private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
+    {
+      // gonna return list of likers, list of likees from logged user
+      // 
+      var user = await _context.Users
+        .Include(x => x.Likers)
+        .Include(x => x.Likees)
+        .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (likers) // likers exist
+        {
+          // want to return all of the users have liked the currently logged-in user.
+          // In order to return a list of integers we need to use only select
+          // Using select, this will return a collection of integers instead of a collection of users
+          // return a list the likerId
+          return user.Likers.Where(u => u.LikeeId == id).Select(i => i.LikerId);
+        }
+        else 
+        {
+          return user.Likees.Where(u => u.LikerId == id).Select(i => i.LikeeId);
+        }
+      
+    }
+
     public async Task<bool> SaveAll()
     {
       // if _context.SaveChangesAsync() <= 0, means saving back is not successfully
       return await _context.SaveChangesAsync() > 0;
     }
+
+     public async Task<Like> GetLike(int userId, int recipientId)
+    {
+      // If like doesn't exist, then return Null; if exist, it returns like
+      return await _context.Likes.FirstOrDefaultAsync(u => 
+        u.LikerId == userId && u.LikeeId == recipientId);
+    }
+
   }
 }
