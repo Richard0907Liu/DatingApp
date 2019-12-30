@@ -27,6 +27,7 @@ import { MemberListResolver } from "./_resolvers/member-list.resolver";
 import { MemberEditResolver } from "./_resolvers/member-edit.resolver";
 import { PreventUnsavedChanges } from "./_guards/prevent-unsaved-changes.guard";
 import { ListsResolver } from './_resolvers/lists.resolver';
+import { MessagesResolver } from './_resolvers/messages.resolver';
 
 
 //// import component into "declaration"
@@ -42,6 +43,7 @@ import { MemberDetailComponent } from "./members/member-detail/member-detail.com
 import { MemberEditComponent } from "./members/member-edit/member-edit.component";
 import { PhotoEditorComponent } from "./members/photo-editor/photo-editor.component";
 import {TimeAgoPipe} from 'time-ago-pipe';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 
 // Solve when first logging, the request didn't include token for sending the request
@@ -72,7 +74,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
     MemberDetailComponent,
     MemberEditComponent,
     PhotoEditorComponent,
-    TimeAgoPipe // for date pipe
+    TimeAgoPipe, // for date pipe
+    MemberMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +115,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
     { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig },
     MemberEditResolver,
     PreventUnsavedChanges,
-    ListsResolver
+    ListsResolver,
+    MessagesResolver
   ],
   bootstrap: [AppComponent]
 })

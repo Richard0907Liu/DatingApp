@@ -16,7 +16,7 @@ namespace DatingApp_API.Helpers
       // After CreateMap<>(), need to set up age and photUrl
 
       // ForMember(), dest => destination Dto. MapFrom can get variable from source model
-      // Search p.Ismain = true and then get its Url
+      // Search p.Ismain = true and then get its Url, finally insert Url into src.photos.Url
       CreateMap<User, UserForListDto>()
         .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>  // First mapping
           src.Photos.FirstOrDefault(p => p.IsMain).Url))
@@ -31,11 +31,17 @@ namespace DatingApp_API.Helpers
       CreateMap<Photo, PhotosForDetailedDto>();
 
       // Want to update User model
+      // <sourceModel, destModel>
       CreateMap<UserForUpdateDto, User>();
       CreateMap<Photo, PhotoForReturnDto>();
       CreateMap<PhotoForCreationDto, Photo>();
       CreateMap<UserForRegisterDto, User>();
-
+      CreateMap<MessageForCreationDto, Message>().ReverseMap(); // Map "Message" model into "MessageForCreationDto"
+      CreateMap<Message, MessageToReturnDto>()
+        .ForMember(m => m.SenderPhotoUrl, opt => 
+          opt.MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
+        .ForMember(m => m.RecipientPhotoUrl, opt => 
+          opt.MapFrom(u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
 
     }
   }

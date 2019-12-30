@@ -173,5 +173,63 @@ namespace DatingApp_API.Data
         u.LikerId == userId && u.LikeeId == recipientId);
     }
 
+    public async Task<Message> GetMessage(int id)
+    {
+      return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+    }
+
+    public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
+    {
+      // Include sender info and then include(ThenInclude()) sender's main photo
+      var messages = _context.Messages
+            .Include(u => u.Sender).ThenInclude(p => p.Photos)
+            .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+            .AsQueryable(); // Make this variable as queryable
+      
+      // Need to filter out the messages that we don't want to return
+      // Because there are inbox, outbox systems
+      switch(messageParams.MessageContainer)
+      {
+        // Inbox => received messages from others
+        case "Inbox":
+          messages = messages.Where(u => u.RecipientId == messageParams.UserId 
+              && u.RecipientDeleted == false);
+          break;
+        // => message that user send out
+        case "Outbox": 
+          messages = messages.Where(u => u.SenderId == messageParams.UserId 
+              && u.SenderDeleted == false);
+          break;
+        default: 
+          messages = messages.Where(u => u.RecipientId == messageParams.UserId 
+              && u.RecipientDeleted == false && u.IsRead == false);
+          break;
+      }
+
+      // Order by most recent message
+      messages = messages.OrderByDescending(d => d.MessageSent);
+
+      return await PagedList<Message>.CreateAsync(messages, 
+          messageParams.PageNumber, messageParams.PageSize);
+    }
+
+    public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+    {
+      // Include sender info and then include(ThenInclude()) sender's main photo
+      var messages = await _context.Messages
+            .Include(u => u.Sender).ThenInclude(p => p.Photos)
+            .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+            // Want to return the messages where the recipientId matches userId.
+            // And the senderId matches recipientId
+            // this is going to allow us to get the complete conversation. And then will add an all condition
+            .Where(m => m.RecipientId == userId && m.RecipientDeleted == false 
+              && m.SenderId == recipientId 
+              || m.RecipientId == recipientId && m.SenderId == userId 
+              && m.SenderDeleted == false)
+            .OrderByDescending(m => m.MessageSent)
+            .ToListAsync(); // List those messages
+      
+      return messages;
+    }
   }
 }

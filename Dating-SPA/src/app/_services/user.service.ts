@@ -1,3 +1,4 @@
+import { MessagesComponent } from './../messages/messages.component';
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -5,6 +6,7 @@ import { environment } from "src/environments/environment";
 import { User } from "../_models/user";
 import { PaginatedResult } from '../_models/Pagination';
 import { map } from 'rxjs/operators';
+import { Message } from '../_models/message';
 
 // Need to Add Bearer token into Headers
 // const httpOptions = {  // Once JwtModule.forRoot() in app.module is set up, not need this property
@@ -108,4 +110,57 @@ export class UserService {
   sendLike(id: number, recipientId: number){
     return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
   }
+
+  // Like a method getUsers()
+  getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
+    const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+
+    // Create params for Url params
+    let params = new HttpParams();
+
+    params = params.append('MessageContainer', messageContainer);
+
+    if(page != null && itemsPerPage != null) {
+      // Add params into URL like "?pageNumber=1&pageSize=10?
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    // Add {oberve: 'response', params} for Url params
+    // Error, have to specify what type would be return, get() => get<Message[]>
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages', {observe: 'response', params})
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;  
+          if(response.headers.get('Pagination') !== null) {
+            // get json string into an object
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+
+          return paginatedResult;
+        })
+      )
+  }
+
+  // Get messages from both sides into one page
+  getMessageThread(id: number, recipientId: number) {
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId);
+  }
+
+  sendMessage(id: number, message: Message) {
+    return this.http.post(this.baseUrl + 'users/' + id + '/messages', message);
+  }
+
+  deleteMessage(id: number, userId: number) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + id, {})
+  }
+
+  markAsRead(userId: number, messageId: number) {
+    // Because not send anything back, so directly use "subscribe" here
+    // We want this to be execute each time the message tab is opened 
+    // when a user clicks on a particular message from their inbox or unread, go to member-message component
+    this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + messageId + '/read', {})
+      .subscribe();
+  }
+
 }

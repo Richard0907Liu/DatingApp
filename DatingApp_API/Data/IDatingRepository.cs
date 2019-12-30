@@ -32,6 +32,15 @@ namespace DatingApp_API.Data
     // Check Like function
     Task<Like> GetLike(int userId, int recipientId);
 
+    //For Message page
+    Task<Message> GetMessage(int id);
+    Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams);  // Inbox, Outbox or unread message
+
+    // Conversation between two users
+    Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
+
+
+
   }
 
 }

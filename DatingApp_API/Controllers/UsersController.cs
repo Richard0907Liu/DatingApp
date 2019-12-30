@@ -13,8 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DatingApp_API.Controllers
 {
   // Perform custom action filer, so user everytime use those method well automatically record lastActive
-  [ServiceFilter(typeof(LogUserActivity))] 
-  
+  [ServiceFilter(typeof(LogUserActivity))]
   [Authorize]
   [Route("api/[controller]")]
   [ApiController]

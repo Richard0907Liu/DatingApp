@@ -40,5 +40,7 @@ namespace DatingApp.API.Models
 
     // a person has been liked by many people
     public ICollection<Like> Likees {get; set;}
+    public ICollection<Message> MessageSent { get; set; }
+    public ICollection<Message> MessageReceived { get; set; }
   }
 }

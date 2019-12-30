@@ -18,11 +18,15 @@ namespace DatingApp.API.Data
     public DbSet<Photo> Photos { get; set; }
 
     public DbSet<Like> Likes {get; set; }
+    public DbSet<Message>  Messages {get; set; }  // Need to configure this relationship in entity framework
 
-    // Want to create a "custom table", need to override
+    // When "many to many" relationship, has to configure those relationships
+    // Want to use "Fluent API" to explicitly tell about the relationship (many to many, not one to many), need to override
     // In DB, there are not Liker and Likee, just LikerId and LikeeId
     protected override void OnModelCreating(ModelBuilder builder)
     {
+      // For like list, many to many
+      // HasKey(), HasOne etc are the "Fluent API" to explicitly tell about the relationship
       builder.Entity<Like>()
         .HasKey(k => new {k.LikerId, k.LikeeId}); // both of them as primary key
 
@@ -44,6 +48,18 @@ namespace DatingApp.API.Data
         .WithMany(u => u.Likees)
         .HasForeignKey(u => u.LikerId)
         .OnDelete(DeleteBehavior.Restrict);
+
+      /////// For messages, many to many
+      ///////
+      builder.Entity<Message>()
+        .HasOne(u => u.Sender) 
+        .WithMany(m => m.MessageSent) // one to many, and the other side also one to many => many to many
+        .OnDelete(DeleteBehavior.Restrict);
+
+      builder.Entity<Message>()
+      .HasOne(u => u.Recipient) 
+      .WithMany(m => m.MessageReceived) // one to many, and the other side also one to many => many to many
+      .OnDelete(DeleteBehavior.Restrict);
 
     }
   }

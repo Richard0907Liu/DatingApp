@@ -1,6 +1,6 @@
 import { AlertifyService } from "./../../_services/alertify.service";
 import { UserService } from "./../../_services/user.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { User } from "src/app/_models/user";
 import { ActivatedRoute } from "@angular/router";
 import {
@@ -8,6 +8,7 @@ import {
   NgxGalleryImage,
   NgxGalleryAnimation
 } from "ngx-gallery";
+import { TabsetComponent } from '../../../../node_modules/ngx-bootstrap';
 
 @Component({
   selector: "app-member-detail",
@@ -15,6 +16,9 @@ import {
   styleUrls: ["./member-detail.component.css"]
 })
 export class MemberDetailComponent implements OnInit {
+  @ViewChild('memberTabs', {static: true}) memberTabs: TabsetComponent;
+
+
   user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
@@ -35,6 +39,12 @@ export class MemberDetailComponent implements OnInit {
       this.user = data["user"]; // Doing so, the variable can send into root and use by certain url
     });
 
+    // Can subscribe queryParam to get tabId. When link to here from message page, it directly go to message tab
+    this.route.queryParams.subscribe( params => {
+      const selectedTab = params['tab'];
+      this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
+    })
+    
     this.galleryOptions = [
       {
         width: "500px",
@@ -61,6 +71,13 @@ export class MemberDetailComponent implements OnInit {
     }
     return imageUrls;
   }
+
+  // TabsetComponent 
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
+  }
+
+
 
   // members/id
   // loadUser() {
