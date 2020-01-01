@@ -9,7 +9,8 @@ export interface User {
   age: number;
   gender: string;
   created: Date;
-  lastActive: Date;
+  // lastActive: Date;  // If use Date, when production, it would got Argument of type 'Date' is not assignable to parameter of type 'string'
+  lastActive: any;   
   photoUrl: string;
   city: string;
   country: string;

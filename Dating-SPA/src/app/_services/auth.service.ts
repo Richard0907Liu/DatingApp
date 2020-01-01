@@ -46,6 +46,10 @@ export class AuthService {
           localStorage.setItem("token", user.token);
           // Save user info into localStorage
           localStorage.setItem("user", JSON.stringify(user.user));
+
+          // Try sessionStorage
+          sessionStorage.setItem("token", user.token);
+
           // When token decoded, it contains {nameid: "3", unique_name: "bob", nbf: 1575488549, exp: 1575574949, iat: 1575488549}
           this.decodedToken = this.jwtHelper.decodeToken(user.token);
 

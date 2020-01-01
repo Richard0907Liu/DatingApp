@@ -23,10 +23,12 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           return throwError(error.statusText);
         }
+
         // Deal with the other type of errors, first we want to take a look inside this error object
         // If error is aHttpErrorResponse instance, want to see error further
         if (error instanceof HttpErrorResponse) {
           // When Application-error is added from back-end
+          // Application-error property was set up in Extension.cs of backend
           const applicationError = error.headers.get("Application-error");
           if (applicationError) {
             return throwError(applicationError);
@@ -47,6 +49,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
           }
           console.log("serverError: ", serverError);
+          console.log("modalStateErrors: ", modalStateErrors);
           return throwError(modalStateErrors || serverError || "Server Error");
         }
       })
@@ -58,5 +61,5 @@ export class ErrorInterceptor implements HttpInterceptor {
 export const ErrorInterceptorProvider = {
   provide: HTTP_INTERCEPTORS,
   useClass: ErrorInterceptor,
-  multi: true // Because HTTP_INTERCEPTORS has multiple interceptor
+  multi: true // Because HTTP_INTERCEPTORS can has multiple interceptor
 };

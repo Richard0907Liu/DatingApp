@@ -32,15 +32,15 @@ namespace DatingApp.API.Models
     public string Country { get; set; }
 
     // Use ICollection<Photo>, each user has a collection of photos al part of profile
-    public ICollection<Photo> Photos { get; set; }
+    public virtual ICollection<Photo> Photos { get; set; }
     // Link to Photos, and Photos has to connect User back, want the "cascade delete"
 
     // a person has many Liker
-    public ICollection<Like> Likers {get; set;}
+    public virtual ICollection<Like> Likers {get; set;}
 
     // a person has been liked by many people
-    public ICollection<Like> Likees {get; set;}
-    public ICollection<Message> MessageSent { get; set; }
-    public ICollection<Message> MessageReceived { get; set; }
+    public virtual ICollection<Like> Likees {get; set;}
+    public virtual ICollection<Message> MessageSent { get; set; }
+    public virtual ICollection<Message> MessageReceived { get; set; }
   }
 }

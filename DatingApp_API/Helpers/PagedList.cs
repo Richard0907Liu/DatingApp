@@ -48,7 +48,7 @@ namespace DatingApp_API.Helpers
             // our page number and page size. And this allows us to page our request.
 
             var count = await source.CountAsync(); // bring in EntityFramworkCore for CountAsync
-            Console.WriteLine("count:::::::::::: " + count);  // 16
+            //("count:::::::::::: " + count);  // 16
             // Get items
             // ToListAsync(), execute this request and list members
             var items = await source.Skip((pageNumber -1) * pageSize).Take(pageSize).ToListAsync();

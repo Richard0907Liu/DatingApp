@@ -1,6 +1,7 @@
 // Put Modules into "imports"
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { appRoutes } from "./routes";
 // import { ValueComponent } from "./value/value.component";
 import { HttpClientModule } from "@angular/common/http";
 import { NavComponent } from "./nav/nav.component";
@@ -37,7 +38,6 @@ import { RegisterComponent } from "./register/register.component";
 import { MemberListComponent } from "./members/member-list/member-list.component";
 import { ListComponent } from "./list/list.component";
 import { MessagesComponent } from "./messages/messages.component";
-import { appRoutes } from "./routes";
 import { MemberCardComponent } from "./members/member-card/member-card.component";
 import { MemberDetailComponent } from "./members/member-detail/member-detail.component";
 import { MemberEditComponent } from "./members/member-edit/member-edit.component";

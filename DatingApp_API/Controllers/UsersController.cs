@@ -61,7 +61,7 @@ namespace DatingApp_API.Controllers
       // Because we're inside an API controller we have access to the "Response"
       // And because we've also written an "AddPagination() in Extensions.cs" to the HTTP response.
       // add users as params in AddPagination(), users include pageSize, totalItems etc..
-      Console.WriteLine("users.TotalCount in UsersController::::::" + users.TotalCount);  //0
+      //Console.WriteLine("users.TotalCount in UsersController::::::" + users.TotalCount);  //0
       Response.AddPagination(users.CurrentPage, users.PageSize,
           users.TotalCount, users.TotalPages);
 

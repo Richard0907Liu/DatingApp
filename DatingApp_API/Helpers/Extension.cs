@@ -24,7 +24,7 @@ namespace DatingApp_API.Helpers
     public static void AddPagination(this HttpResponse response, 
       int currentPage, int itemsPerPage, int totalItems, int totalPages)
     {
-      Console.WriteLine("totalItems in Extension::::::::::" + totalItems );  // 0
+      // Console.WriteLine("totalItems in Extension::::::::::" + totalItems );  // 0
       var paginationHeader =  new PaginationHeader(currentPage, itemsPerPage, totalItems, totalPages);
 
       // pagination in headers have to be camel case not title case for angular front end.

@@ -57,7 +57,7 @@ namespace DatingApp_API.Controllers
 
       // Because that's a navigation property on our photo. Then use autoMapper 
       // transfer photoFromRepo into PhotoFroReturnDto to get info we want
-      Console.WriteLine("photoFromRepo: ", photoFromRepo);
+      //Console.WriteLine("photoFromRepo: ", photoFromRepo);
 
       var photo = _mapper.Map<PhotoForReturnDto>(photoFromRepo);
 

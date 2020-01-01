@@ -34,13 +34,41 @@ namespace DatingApp_API
 
     public IConfiguration Configuration { get; }
 
+    // Development mode
+    public void ConfigureDevelopmentServices(IServiceCollection services)
+    {
+         services.AddDbContext<DataContext>(x => {
+           // lazy loaing for navigation properties
+           x.UseLazyLoadingProxies();
+           // Get info from appsettings.json
+           x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+         });
+         // call ConfigureServices()
+         ConfigureServices(services);
+    }
+
+    // Development mode 
+    public void ConfigureProductionServices(IServiceCollection services)
+    {
+        services.AddDbContext<DataContext>(x => {
+           // lazy loaing for navigation properties
+           x.UseLazyLoadingProxies(); 
+           // And then romove "include()" statement in DatingRepository, but it didn't show error about loding photo
+           // so I didn't remove "include()" statment
+
+
+           // Get info from appsettings.json
+           x.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+        });
+         // call ConfigureServices()
+         ConfigureServices(services);
+    }
+
+
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddDbContext<DataContext>(x => x.UseSqlite(
-            // Get info from appsettings.json
-            Configuration.GetConnectionString("DefaultConnection"))
-      );
+   
 
       // AddControllers
       // Use NewtonsoftJson that have feature we want. Not use System.Text.Json
@@ -131,7 +159,8 @@ namespace DatingApp_API
             var error = context.Features.Get<IExceptionHandlerFeature>();
             if (error != null)
             {
-              // Need to extend this response to ADD error on the header of request
+              //####
+              // Need to extend this response to ADD error on the "header of request"
               // Use AddApplicationError of Helpers/Extension.cs
               // And then go to Extentions.cs to add information into reponse Header with Error message
               context.Response.AddApplicationError(error.Error.Message);
@@ -157,14 +186,21 @@ namespace DatingApp_API
       // Need "AllowCredentials()" for uploading files, this would actually fix our problem with ng2-file-upload.
       // But use  AllowCredentials() means needing to use "cookies" for authenitcaton, but we do not use cookies authentication
 
+      // for development, Need to tell the Kestrel server to use the default files
+      // it's going to look for an index.html. Any of the default files to a web server 
+      // would expect to find inside its W WWwroot folder
+      app.UseDefaultFiles();
 
+      // need to add in here is at the ability for our web server to use static files
+      app.UseStaticFiles();
 
+      // here is an endpoint
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
 
         // Code for 3.0
-        //endpoints.MapFallbackToController("Index", "Fallback");
+        endpoints.MapFallbackToController("Index", "Fallback");
 
       });
     }

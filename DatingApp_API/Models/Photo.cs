@@ -17,7 +17,7 @@ namespace DatingApp.API.Models
     public string PublicId { get; set; }  // Add a new model, need to add a new migration
 
     // Connect back to User, when User is deleted, this Photo is also deleted, cascade delete
-    public User User { get; set; }
+    public virtual User User { get; set; }
 
     public int UserId { get; set; }
 
